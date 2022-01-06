@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:jsp="http://java.sun.com/xml/ns/javaee/jsp" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
+  <!-- Spring监听器 --> 
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>classpath:applicationContext*.xml</param-value>
+  </context-param>
+  <context-param>
+    <param-name>log4jConfigLocation</param-name>
+    <param-value>classpath:log4j.properties</param-value>
+  </context-param>
+  <listener>
+    <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+  </listener>
+  <!-- Spring MVC servlet -->
+  <servlet>
+    <servlet-name>springmvc</servlet-name>
+    <!-- DispatcherServlet前端控制器 -->
+    <servlet-class>
+      <!-- servlet对应的java类 -->
+      org.springframework.web.servlet.DispatcherServlet
+    </servlet-class>
+    <init-param>
+      <!-- contextConfigLocation是参数名称，该参数值包含SpringMVC的配置文件路径 -->
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath:springmvc-config.xml</param-value>
+    </init-param>
+    <!-- 在web应用启动时立即加载Servlet -->
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <!-- springmvc映射方式 -->
+  <servlet-mapping>
+    <servlet-name>springmvc</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+  <filter>
+    <!-- characterEncodingFilter字符编码过滤器 -->
+    <filter-name>characterEncodingFilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <!-- 要使用的字符集，一般我们使用UTF-8 -->
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>characterEncodingFilter</filter-name>
+    <!--这里不能留空或者直接写 ' / ' ，否者不起作用-->
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <jsp-config>
+    <jsp-property-group>
+      <url-pattern>*.jsp</url-pattern>
+      <el-ignored>false</el-ignored>
+      <scripting-invalid>true</scripting-invalid>
+      <include-prelude>/WEB-INF/jsps/taglib.jsp</include-prelude>
+    </jsp-property-group>
+  </jsp-config>
+  <welcome-file-list>
+    <welcome-file>loginForm.jsp</welcome-file>
+  </welcome-file-list>
+</web-app>
